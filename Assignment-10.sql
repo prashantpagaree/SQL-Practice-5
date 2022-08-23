@@ -1,53 +1,22 @@
-Create database assignadd;
-use assignadd;
+--create database
+Create database assign10;
+use assig10;
 
-CREATE TABLE AS10(
-EMPLOYEE_ID INT,
-FIRST_NAME VARCHAR(20),
-LAST_NAME VARCHAR(20),
-EMAIL VARCHAR (20),
-SALARY INT,
-MANAGER_ID INT,
-DEPARTMENT_ID INT);
+--2a. Write a SQL query to find all the orders issued by the salesman 'Paul Adam'. Return ord_no, purch_amt, ord_date, customer_id and salesman_id. 
 
-INSERT INTO AS10 VALUES(100,'STEVEN','KING','SKING',24000,0,90),
-(101,'NEENA','KOCHHAR','NKOCHHAR',17000,100,90),
-(102,'LEX','DE HAN','LDEHAAN',17000,100,90),
-(103,'ALEXANDER','HUNOLD','AHUNOLD',9000,102,60),
-(104,'BRUCE','ERNST','BERNST',6000,103,60),
-(105,'DAVID','AUSTIN','DAUSTIN',4800,103,60);
+select * from orders where salesman_id = 
+(select salesman_id from salesman where name = 'Paul Adam');
 
-CREATE TABLE B(
-GRADE_LEVEL CHAR(3),
-LOWEST_SAL INT,
-HIGHEST_SAL INT);
+--2b. Write a SQL query to find the order values greater than the average order value of 10th October 2012. Return ord_no, purch_amt, ord_date, customer_id, salesman_id. 
 
-INSERT INTO B VALUES('A',1000,2999),
-('B',3000,5999),
-('C',6000,9999),
-('D',10000,14999),
-('E',15000,24999),
-('F',25000,40000);
+select * from orders where purch_amt > (select avg(purch_amt) from orders where ord_date = '2012-10-10');
 
-SELECT * FROM AS10;
-SELECT * FROM B;
-DROP TABLE B
-Select FIRST_NAME,LAST_NAME,SALARY, 
-case
-when SALARY BETWEEN 1000 AND 2999 THEN 'A'
-when SALARY BETWEEN 3000 AND 5999 THEN 'B'
-when SALARY BETWEEN 6000 AND 9999 THEN 'C'
-when SALARY BETWEEN 10000 AND 14999 THEN 'D'
-when SALARY BETWEEN 15000 AND 24999 THEN 'E'
-when SALARY BETWEEN 25000 AND 40000 THEN 'F' END AS JOB_GRADE
-from A;
+--2c. Write a SQL query to find those salespeople who earned the maximum commission. Return ord_no, purch_amt, ord_date, and salesman_id. 
 
---c. Write a query to identify all managers and get all the available details for them
+select ord_no,purch_amt,ord_date,salesman_id from orders where 
+salesman_id = (select top 1 salesman_id from salesman order by commission desc);
 
-Select B.MANAGER_ID,A.EMPLOYEE_ID,A.FIRST_NAME,A.LAST_NAME,A.EMAIL,A.SALARY,A.DEPARTMENT_ID from
-AS10 A Inner Join AS10 B ON A.EMPLOYEE_ID = B.MANAGER_ID;
+--2d. Write a SQL query to find those orders, which are higher than the average amount of the orders. Return ord_no, purch_amt, ord_date, customer_id and salesman_id.
 
---Q2. Write a query to find cumulative sum of amount for every customer (Input
---and Output are present below)Select A.Cust_ID, A.DATE, A.AMOUNT, SUM(B.AMOUNT) AS Cum_Sum From I1 A INNER JOINI1 B ON A.CUST_ID = B.CUST_ID AND A.DATE >= B.DATEGROUP BY A.Cust_ID, A.DATEORDER BY A.Cust_ID;--a) Write an SQL query that returns the employees (number and name only) who have a
---title of 'EE' or 'SA' and make more than $35,000, order the data on the basis of the last 3
---characters of the first name in ascending order.
+select * from orders where purch_amt > (select avg(purch_amt) from orders);
+
